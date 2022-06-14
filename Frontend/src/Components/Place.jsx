@@ -69,7 +69,14 @@ const Place = () => {
   const mousePressed = (p5) => {
     const xIndex = Math.floor(p5.mouseX / size);
     const yIndex = yMaxPlace - 1 - Math.floor(p5.mouseY / size);
-    place(xIndex, yIndex, "red", "me");
+    if (p5.mouseButton === "RIGHT") {
+      // does not work?
+      console.log("clear");
+      clear(xIndex, yIndex);
+    } else {
+      console.log("place");
+      place(xIndex, yIndex, "red", "me");
+    }
   };
 
   return (
