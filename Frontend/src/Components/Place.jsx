@@ -1,5 +1,5 @@
-import React from "react";
 import Sketch from "react-p5";
+import usePlace from "./usePlace";
 
 const frameRate = 1;
 
@@ -53,7 +53,8 @@ const placePixel = (p5, xIndex, yIndex, color) => {
 
 const Place = () => {
   console.log("RENDER PLACE");
-  const { pixels, showGrid } = { pixels: {}, showGrid: true };
+  const { state, place, clear } = usePlace();
+  const { pixels, showGrid } = state;
   const draw = (p5) => {
     // NOTE: Do not use setState in the draw function or in functions that are executed
     clearCanvas(p5);
@@ -66,7 +67,9 @@ const Place = () => {
   };
 
   const mousePressed = (p5) => {
-    console.log("coords", p5.mouseX, p5.mouseY);
+    const xIndex = Math.floor(p5.mouseX / size);
+    const yIndex = Math.floor(yMaxPlace - 1 - p5.mouseY / size);
+    place(xIndex, yIndex, "red", "me");
   };
 
   return (

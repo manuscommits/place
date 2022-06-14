@@ -17,7 +17,7 @@ app.listen(HTTP_PORT, () => {
   console.log(`Server running on port ${HTTP_PORT}`);
 });
 
-app.get("/place", (req, res, next) => {
+app.post("/place", (req, res, next) => {
   const { x, y, color, displayName } = req.body;
   place(x, y, color, displayName)
     ? res.json({
@@ -28,7 +28,7 @@ app.get("/place", (req, res, next) => {
       });
 });
 
-app.get("/clear", (req, res, next) => {
+app.post("/clear", (req, res, next) => {
   const { x, y, displayName } = req.body;
   clear(x, y, color, displayName)
     ? res.json({

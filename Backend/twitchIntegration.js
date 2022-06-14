@@ -2,6 +2,7 @@ const tmiJs = require("tmi.js");
 const { place, clear } = require("./place.js");
 
 const channel = process.env.TWITCH_CHANNEL;
+console.log("Listening to twtich channel " + channel + ".");
 
 const messageCallback = (channel, tags, message, self) => {
   const displayName = tags["display-name"];
