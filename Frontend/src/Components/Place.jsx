@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Sketch from "react-p5";
 import usePlace from "./usePlace";
 
@@ -53,6 +54,8 @@ const placePixel = (p5, xIndex, yIndex, color) => {
 
 const Place = () => {
   console.log("RENDER PLACE");
+  const [displayName, setDisplayName] = useState();
+  const [color, setColor] = useState("black");
   const { state, place, clear } = usePlace();
   const { pixels, showGrid } = state;
   const draw = (p5) => {
@@ -75,13 +78,23 @@ const Place = () => {
       clear(xIndex, yIndex);
     } else {
       console.log("place");
-      place(xIndex, yIndex, "red", "me");
+      place(xIndex, yIndex, color, displayName);
     }
   };
 
   return (
     <div>
-      <Sketch setup={setup} draw={draw} mousePressed={mousePressed} />
+      <input
+        placeholder="username"
+        onChange={(e) => setDisplayName(e.target.value)}
+      ></input>
+      <input
+        placeholder="color"
+        onChange={(e) => setColor(e.target.value)}
+      ></input>
+      {displayName && (
+        <Sketch setup={setup} draw={draw} mousePressed={mousePressed} />
+      )}
     </div>
   );
 };
