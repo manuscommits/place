@@ -4,8 +4,8 @@ import usePlace from "./usePlace";
 const frameRate = 1;
 
 const size = 10;
-const xMaxPlace = 100;
-const yMaxPlace = 100;
+const xMaxPlace = 140;
+const yMaxPlace = 90;
 
 const canvasWidth = size * xMaxPlace;
 const canvasHeight = size * yMaxPlace;
