@@ -14,7 +14,7 @@ const place = (x, y, color, displayName) => {
 };
 
 const clear = (x, y) => {
-  if (!coordsValidAndInRange(x, y) || !displayName) return false;
+  if (!coordsValidAndInRange(x, y)) return false;
   deletePixel(x, y);
   return true;
 };
