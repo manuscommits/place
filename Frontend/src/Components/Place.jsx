@@ -53,7 +53,7 @@ const placePixel = (p5, xIndex, yIndex, color) => {
 
 const Place = () => {
   console.log("RENDER PLACE");
-  const { pixels, showGrid } = { pixels: [], showGrid: true };
+  const { pixels, showGrid } = { pixels: {}, showGrid: true };
   const draw = (p5) => {
     // NOTE: Do not use setState in the draw function or in functions that are executed
     clearCanvas(p5);
