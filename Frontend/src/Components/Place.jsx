@@ -68,7 +68,7 @@ const Place = () => {
 
   const mousePressed = (p5) => {
     const xIndex = Math.floor(p5.mouseX / size);
-    const yIndex = Math.floor(yMaxPlace - 1 - p5.mouseY / size);
+    const yIndex = yMaxPlace - 1 - Math.floor(p5.mouseY / size);
     place(xIndex, yIndex, "red", "me");
   };
 
