@@ -2,7 +2,8 @@
   font-size: 35px;
   font-weight: bold;
   color: rgb(255, 187, 0);
-  height: 1080px;
-  width: 1920px;
+  /* height: 1080px; */
+  /* width: 1920px; */
   display: flex;
+  justify-content: center;
 }

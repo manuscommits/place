@@ -5,7 +5,7 @@ import usePlace from "./usePlace";
 const frameRate = 1;
 
 const size = 10;
-const xMaxPlace = 140;
+const xMaxPlace = 150;
 const yMaxPlace = 90;
 
 const canvasWidth = size * xMaxPlace;
@@ -54,7 +54,7 @@ const placePixel = (p5, xIndex, yIndex, color) => {
 
 const Place = () => {
   console.log("RENDER PLACE");
-  const [displayName, setDisplayName] = useState();
+  const [displayName, setDisplayName] = useState("default");
   const [color, setColor] = useState("black");
   const { state, place, clear } = usePlace();
   const { pixels, showGrid } = state;
@@ -92,9 +92,7 @@ const Place = () => {
         placeholder="color"
         onChange={(e) => setColor(e.target.value)}
       ></input>
-      {displayName && (
-        <Sketch setup={setup} draw={draw} mousePressed={mousePressed} />
-      )}
+      <Sketch setup={setup} draw={draw} mousePressed={mousePressed} />
     </div>
   );
 };

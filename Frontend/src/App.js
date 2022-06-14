@@ -6,7 +6,7 @@ const App = () => {
   console.log("APP RENDER");
 
   return (
-    <div>
+    <div className="App">
       <Place />
     </div>
   );
