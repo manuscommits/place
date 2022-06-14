@@ -10,7 +10,7 @@ const postWithBody = (url, body) => {
     },
     body: JSON.stringify(body),
   };
-  fetch(url, fetchOptions)
+  return fetch(url, fetchOptions)
     .then((response) => response.json())
     .then(({ message }) => console.log(message))
     .catch((reason) => {
@@ -21,7 +21,7 @@ const postWithBody = (url, body) => {
 const usePlace = () => {
   const [state, setState] = useState({ pixels: {}, showGrid: true });
 
-  useEffect(() => {
+  const loadPixels = () => {
     fetch(url + "allPixels")
       .then((response) => response.json())
       .then(({ allPixels }) => {
@@ -38,16 +38,20 @@ const usePlace = () => {
       .catch((reason) => {
         console.log(reason);
       });
+  };
+
+  useEffect(() => {
+    loadPixels();
   }, []);
 
   const place = (x, y, color, displayName) => {
     const body = { x, y, color, displayName };
-    postWithBody(url + "place", body);
+    postWithBody(url + "place", body).then(() => loadPixels());
   };
 
   const clear = (x, y, displayName) => {
     const body = { x, y, displayName };
-    postWithBody(url + "clear", body);
+    postWithBody(url + "clear", body).then(() => loadPixels());
   };
 
   return { state, place, clear };

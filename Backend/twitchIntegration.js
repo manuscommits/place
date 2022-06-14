@@ -6,7 +6,6 @@ console.log("Listening to twtich channel " + channel + ".");
 
 const messageCallback = (channel, tags, message, self) => {
   const displayName = tags["display-name"];
-  console.log("TWITCH MSG RECVEIVED", displayName, message);
   handleCommand(displayName, message, self);
 };
 
@@ -15,6 +14,7 @@ const handleCommand = (displayName, message, self) => {
   if (message.startsWith("!")) {
     const args = message.slice(1).split(" ");
     const command = args.shift().toLowerCase();
+    console.log("TWITCH COMMAND RECVEIVED", displayName, command, args);
     executeCommand(displayName, command, args);
   }
 };
