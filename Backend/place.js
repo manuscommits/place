@@ -1,4 +1,4 @@
-const { insert, deletePixel } = require("./database.js");
+const { insert } = require("./database.js");
 const { isInteger } = require("./utils");
 
 const coordsValidAndInRange = (x, y) => {
@@ -13,10 +13,8 @@ const place = (x, y, color, displayName) => {
   return true;
 };
 
-const clear = (x, y) => {
-  if (!coordsValidAndInRange(x, y)) return false;
-  deletePixel(x, y);
-  return true;
+const clear = (x, y, displayName) => {
+  return place(x, y, "clear", displayName);
 };
 
 module.exports = { place, clear };

@@ -12,46 +12,57 @@ const postWithBody = (url, body) => {
   };
   return fetch(url, fetchOptions)
     .then((response) => response.json())
-    .then(({ message }) => console.log(message))
-    .catch((reason) => {
-      console.log(reason);
-    });
+    .then(({ success }) => console.log(success ? "Success" : "Failed"))
+    .catch((reason) => console.log(reason));
 };
 
 const usePlace = () => {
   const [state, setState] = useState({ pixels: {}, showGrid: true });
 
-  const loadPixels = () => {
+  const updatePixels = (newPixels) => {
+    console.log("#pixels", pixels.length);
+    const pixels = { ...previousState.pixels };
+    newPixels.forEach(({ x, y, color }) => {
+      if (color !== "clear") pixels[[x, y]] = color;
+      else delete pixels[[x, y]];
+    });
+    setState((previousState) => ({ ...previousState, pixels }));
+  };
+
+  const loadAllPixels = () => {
     fetch(url + "allPixels")
       .then((response) => response.json())
-      .then(({ allPixels }) => {
-        console.log("allPixels", allPixels);
-        const loadedPixels = {};
-        allPixels.forEach(({ x, y, color }) => {
-          loadedPixels[[x, y]] = color;
-        });
-        setState((previousState) => ({
-          ...previousState,
-          pixels: loadedPixels,
-        }));
-      })
-      .catch((reason) => {
-        console.log(reason);
-      });
+      .then(({ pixels }) => updatePixels(pixels))
+      .catch((error) => console.log(error));
+  };
+
+  const loadPixelsSince = () => {
+    const fetchOptions = {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      body: JSON.stringify({ since: Date.now() - 60000 }),
+    };
+    fetch(url + "pixelsSince", fetchOptions)
+      .then((response) => response.json())
+      .then(({ pixels }) => updatePixels(pixels))
+      .catch((error) => console.log(error));
   };
 
   useEffect(() => {
-    setInterval(() => loadPixels(), 5000);
+    loadAllPixels();
+    setInterval(() => loadPixelsSince(), 5000);
   }, []);
 
   const place = (x, y, color, displayName) => {
     const body = { x, y, color, displayName };
-    postWithBody(url + "place", body).then(() => loadPixels());
+    postWithBody(url + "place", body).then(loadPixelsSince);
   };
 
   const clear = (x, y, displayName) => {
     const body = { x, y, displayName };
-    postWithBody(url + "clear", body).then(() => loadPixels());
+    postWithBody(url + "clear", body).then(loadPixelsSince);
   };
 
   return { state, place, clear };
