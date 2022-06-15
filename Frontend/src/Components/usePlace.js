@@ -54,7 +54,7 @@ const usePlace = () => {
 
   useEffect(() => {
     loadAllPixels();
-    setInterval(() => loadPixelsSince(), 5000);
+    setInterval(() => loadAllPixels(), 5000);
   }, []);
 
   const place = (x, y, color, displayName) => {
