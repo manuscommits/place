@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const url = "https://bed3-217-250-76-114.eu.ngrok.io/";
+const url = "https://2770-217-250-64-27.eu.ngrok.io/";
 
 const postWithBody = (url, body) => {
   const fetchOptions = {
