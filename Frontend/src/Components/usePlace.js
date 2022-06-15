@@ -20,13 +20,15 @@ const usePlace = () => {
   const [state, setState] = useState({ pixels: {}, showGrid: true });
 
   const updatePixels = (newPixels) => {
-    console.log("#pixels", pixels.length);
-    const pixels = { ...previousState.pixels };
-    newPixels.forEach(({ x, y, color }) => {
-      if (color !== "clear") pixels[[x, y]] = color;
-      else delete pixels[[x, y]];
+    console.log("#pixels", newPixels.length);
+    setState((previousState) => {
+      const pixels = { ...previousState.pixels };
+      newPixels.forEach(({ x, y, color }) => {
+        if (color !== "clear") pixels[[x, y]] = color;
+        else delete pixels[[x, y]];
+      });
+      return { ...previousState, pixels };
     });
-    setState((previousState) => ({ ...previousState, pixels }));
   };
 
   const loadAllPixels = () => {
