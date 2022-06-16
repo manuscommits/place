@@ -15,7 +15,6 @@ const strongLine = 0;
 
 export {
   webSocketUrl,
-  maxListerners,
   frameRate,
   size,
   xMaxPlace,
