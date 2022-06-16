@@ -7,7 +7,7 @@ import {
   yMaxPlace
 } from "../settings";
 import { clearCanvas, drawGrid, placePixel } from "../Utils/p5utils";
-import usePlace from "./usePlace";
+import usePlace from "../Hooks/usePlace";
 
 const setup = (p5, canvasParentRef) => {
   p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
