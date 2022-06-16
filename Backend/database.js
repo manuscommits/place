@@ -41,22 +41,12 @@ const getAllPixels = (callback) => {
   db.all(`SELECT * FROM ${tableName}`, [], callback);
 };
 
-const getPixelsSince = (since, callback) => {
-  db.all(`SELECT * FROM ${tableName} WHERE timestamp >= ${since}`, [], callback);
-};
-
 const deletePixel = (x, y) => {
   db.run(`DELETE FROM ${tableName} WHERE x='${x}' AND y='${y}'`);
-};
-
-const deleteClearPixels = () => {
-  db.run(`DELETE FROM ${tableName} WHERE color='clear'`);
 };
 
 const deleteUsersPixels = (displayName) => {
     db.run(`DELETE FROM ${tableName} WHERE displayName='${displayName}'`);
 };
 
-setInterval(deleteClearPixels, 60000);
-
-module.exports = { insert, getAllPixels, getPixelsSince, deletePixel, deleteUsersPixels };
+module.exports = { insert, getAllPixels, deletePixel, deleteUsersPixels };

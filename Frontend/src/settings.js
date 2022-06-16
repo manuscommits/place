@@ -1,4 +1,6 @@
-const frameRate = 1;
+const webSocketUrl = "ws://0bca-217-250-64-27.eu.ngrok.io/";
+
+const frameRate = 10;
 
 const size = 10;
 const xMaxPlace = 150;
@@ -12,14 +14,14 @@ const mediumLine = 50;
 const strongLine = 0;
 
 export {
-    frameRate,
-    size,
-    xMaxPlace,
-    yMaxPlace,
-    canvasWidth,
-    canvasHeight,
-    lightLine,
-    mediumLine,
-    strongLine,
+  webSocketUrl,
+  frameRate,
+  size,
+  xMaxPlace,
+  yMaxPlace,
+  canvasWidth,
+  canvasHeight,
+  lightLine,
+  mediumLine,
+  strongLine,
 };
-

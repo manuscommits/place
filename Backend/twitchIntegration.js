@@ -1,8 +1,8 @@
 const tmiJs = require("tmi.js");
-const { place, clear } = require("./place.js");
+const { placeAndBroadCast, clearAndBroadCast } = require("./webSocketServer");
 
 const channel = process.env.TWITCH_CHANNEL;
-console.log("Listening to twtich channel " + channel + ".");
+console.log("Listening to twitch channel " + channel + ".");
 
 const messageCallback = (channel, tags, message, self) => {
   const displayName = tags["display-name"];
@@ -26,10 +26,10 @@ const executeCommand = (displayName, command, args) => {
   const arg3 = args[3];
   switch (command) {
     case "place":
-      arg0 && arg1 && arg2 && place(arg0, arg1, arg2, displayName);
+      arg0 && arg1 && arg2 && placeAndBroadCast(arg0, arg1, arg2, displayName);
       break;
     case "clear":
-      arg0 && arg1 && clear(arg0, arg1);
+      arg0 && arg1 && clearAndBroadCast(arg0, arg1);
       break;
     default:
       break;

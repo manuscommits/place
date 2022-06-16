@@ -1,4 +1,5 @@
 import Sketch from "react-p5";
+import usePlace from "../Hooks/usePlace";
 import {
   canvasHeight,
   canvasWidth,
@@ -7,7 +8,6 @@ import {
   yMaxPlace
 } from "../settings";
 import { clearCanvas, drawGrid, placePixel } from "../Utils/p5utils";
-import usePlace from "../Hooks/usePlace";
 
 const setup = (p5, canvasParentRef) => {
   p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
@@ -16,7 +16,7 @@ const setup = (p5, canvasParentRef) => {
 };
 
 const Place = () => {
-  console.log("RENDER PLACE");
+  // console.log("RENDER PLACE");
   const { state, place, clear, setDisplayName, setColor } = usePlace();
   const { pixels, showGrid } = state;
 

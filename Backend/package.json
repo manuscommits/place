@@ -1,11 +1,10 @@
 {
-  "name": "express-api",
+  "name": "place",
   "version": "1.0.0",
-  "description": "Express REST API",
-  "main": "server.js",
+  "description": "Place you pixel",
+  "main": "main.js",
   "scripts": {
-    "start": "node server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node --trace-warnings main.js"
   },
   "author": "Me",
   "license": "ISC",

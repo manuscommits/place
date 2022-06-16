@@ -1,9 +1,8 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const { getAllPixels, getPixelsSince } = require("./database.js");
+const { getAllPixels } = require("./database.js");
 const { place, clear } = require("./place.js");
-require("./twitchIntegration.js");
 
 const HTTP_PORT = 8000;
 
@@ -33,15 +32,6 @@ app.post("/clear", (req, res, next) => {
 
 app.get("/allPixels", (req, res, next) => {
   getAllPixels((err, rows) => {
-    !err
-      ? res.json({ success: true, pixels: rows })
-      : res.json({ success: false });
-  });
-});
-
-app.post("/pixelsSince", (req, res, next) => {
-  const since = req.body.since;
-  getPixelsSince(since, (err, rows) => {
     !err
       ? res.json({ success: true, pixels: rows })
       : res.json({ success: false });
