@@ -8,6 +8,7 @@ import {
   yMaxPlace
 } from "../settings";
 import { clearCanvas, drawGrid, placePixel } from "../Utils/p5utils";
+import Switch from '@mui/material/Switch';
 
 const setup = (p5, canvasParentRef) => {
   p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
@@ -17,7 +18,7 @@ const setup = (p5, canvasParentRef) => {
 
 const Place = () => {
   // console.log("RENDER PLACE");
-  const { state, place, clear, setDisplayName, setColor } = usePlace();
+  const { state, place, clear, setDisplayName, setColor, toggleGrid } = usePlace();
   const { pixels, showGrid } = state;
 
   const draw = (p5) => {
@@ -57,6 +58,7 @@ const Place = () => {
         placeholder="color"
         onChange={(e) => setColor(e.target.value)}
       ></input>
+      <Switch defaultChecked onChange={toggleGrid} />
       <Sketch setup={setup} draw={draw} mousePressed={mousePressed} />
     </div>
   );

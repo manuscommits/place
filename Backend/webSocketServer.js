@@ -1,9 +1,9 @@
 const WebSocketServer = require("ws");
-const { maxListerners } = require("../frontend/src/settings");
 const { getAllPixels } = require("./database");
 const { place, clear } = require("./place");
 
 const PORT = 8000;
+const maxListerners = 20;
 
 const webSocketServer = new WebSocketServer.Server({ port: PORT });
 webSocketServer.setMaxListeners(maxListerners);

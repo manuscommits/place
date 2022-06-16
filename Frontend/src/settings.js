@@ -1,7 +1,5 @@
 const webSocketUrl = "ws://0.tcp.eu.ngrok.io:19467";
 
-const maxListerners = 20;
-
 const frameRate = 10;
 
 const size = 10;

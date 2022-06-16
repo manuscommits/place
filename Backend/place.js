@@ -1,8 +1,8 @@
 const { insert, deletePixel } = require("./database.js");
 const { isInteger } = require("./utils");
 
-const xMax = 200;
-const yMax = 200;
+const xMax = 150;
+const yMax = 90;
 
 const coordsValidAndInRange = (x, y) => {
   return (

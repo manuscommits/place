@@ -50,14 +50,6 @@ const usePlace = () => {
 
   const { send } = useWebSocket(loadAllPixels, onMessage);
 
-  const setDisplayName = (displayName) => {
-    setState((previousState) => ({ ...previousState, displayName }));
-  };
-
-  const setColor = (color) => {
-    setState((previousState) => ({ ...previousState, color }));
-  };
-
   const place = (x, y) => {
     const data = { x, y, color: state.color, displayName: state.displayName };
     send("place", data);
@@ -68,7 +60,22 @@ const usePlace = () => {
     send("clear", data);
   };
 
-  return { state, place, clear, setColor, setDisplayName };
+  const setDisplayName = (displayName) => {
+    setState((previousState) => ({ ...previousState, displayName }));
+  };
+
+  const setColor = (color) => {
+    setState((previousState) => ({ ...previousState, color }));
+  };
+
+  const toggleGrid = () => {
+    setState((previousState) => ({
+      ...previousState,
+      showGrid: !previousState.showGrid,
+    }));
+  };
+
+  return { state, place, clear, setColor, setDisplayName, toggleGrid };
 };
 
 export default usePlace;
