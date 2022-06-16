@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 const url = "https://0bca-217-250-64-27.eu.ngrok.io/";
 
+const pixelSinceTime = 15000;
+
 const postWithBody = (url, body) => {
   const fetchOptions = {
     method: "POST",
@@ -13,11 +15,34 @@ const postWithBody = (url, body) => {
   return fetch(url, fetchOptions)
     .then((response) => response.json())
     .then(({ success }) => console.log(success ? "Success" : "Failed"))
-    .catch((reason) => console.log(reason));
+    .catch(console.log);
 };
 
 const usePlace = () => {
-  const [state, setState] = useState({ pixels: {}, showGrid: true });
+  const [state, setState] = useState({
+    pixels: {},
+    showGrid: true,
+    displayName: "default",
+    color: "black",
+  });
+
+  const place = (x, y) => {
+    const body = { x, y, color: state.color, displayName: state.displayName };
+    postWithBody(url + "place", body).then(loadPixelsSince);
+  };
+
+  const clear = (x, y) => {
+    const body = { x, y, displayName: state.displayName };
+    postWithBody(url + "clear", body).then(loadPixelsSince);
+  };
+
+  const setDisplayName = (displayName) => {
+    setState((previousState) => ({ ...previousState, displayName }));
+  };
+
+  const setColor = (color) => {
+    setState((previousState) => ({ ...previousState, color }));
+  };
 
   const updatePixels = (newPixels) => {
     console.log("#pixels", newPixels.length);
@@ -35,7 +60,7 @@ const usePlace = () => {
     fetch(url + "allPixels")
       .then((response) => response.json())
       .then(({ pixels }) => updatePixels(pixels))
-      .catch((error) => console.log(error));
+      .catch(console.log);
   };
 
   const loadPixelsSince = () => {
@@ -44,12 +69,12 @@ const usePlace = () => {
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
-      body: JSON.stringify({ since: Date.now() - 60000 }),
+      body: JSON.stringify({ since: Date.now() - pixelSinceTime }),
     };
     fetch(url + "pixelsSince", fetchOptions)
       .then((response) => response.json())
       .then(({ pixels }) => updatePixels(pixels))
-      .catch((error) => console.log(error));
+      .catch(console.log);
   };
 
   useEffect(() => {
@@ -58,17 +83,7 @@ const usePlace = () => {
     // eslint-disable-next-line
   }, []);
 
-  const place = (x, y, color, displayName) => {
-    const body = { x, y, color, displayName };
-    postWithBody(url + "place", body).then(loadPixelsSince);
-  };
-
-  const clear = (x, y, displayName) => {
-    const body = { x, y, displayName };
-    postWithBody(url + "clear", body).then(loadPixelsSince);
-  };
-
-  return { state, place, clear };
+  return { state, place, clear, setColor, setDisplayName };
 };
 
 export default usePlace;

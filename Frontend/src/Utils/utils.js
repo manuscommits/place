@@ -4,4 +4,3 @@ const isInteger = (number) => {
 };
 
 export { isInteger };
-
