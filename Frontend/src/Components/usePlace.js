@@ -40,7 +40,7 @@ const usePlace = () => {
 
   const loadPixelsSince = () => {
     const fetchOptions = {
-      method: "GET",
+      method: "POST",
       headers: {
         "Content-Type": "application/json;charset=utf-8",
       },
@@ -54,7 +54,8 @@ const usePlace = () => {
 
   useEffect(() => {
     loadAllPixels();
-    setInterval(() => loadAllPixels(), 5000);
+    setInterval(loadPixelsSince, 5000);
+    // eslint-disable-next-line
   }, []);
 
   const place = (x, y, color, displayName) => {

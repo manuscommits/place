@@ -39,7 +39,7 @@ app.get("/allPixels", (req, res, next) => {
   });
 });
 
-app.get("/pixelsSince", (req, res, next) => {
+app.post("/pixelsSince", (req, res, next) => {
   const since = req.body.since;
   getPixelsSince(since, (err, rows) => {
     !err
