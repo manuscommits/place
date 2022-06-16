@@ -62,7 +62,7 @@ const startWebSocketSever = () => {
     });
     ws.onerror = (event) => console.log(event.message);
   });
-  console.log("The WebSocket server is running on port 8080");
+  console.log(`The WebSocket server is running on port ${PORT}.`);
 };
 
 module.exports = { startWebSocketSever, placeAndBroadCast, clearAndBroadCast };

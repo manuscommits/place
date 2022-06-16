@@ -1,4 +1,4 @@
-const webSocketUrl = "ws://0bca-217-250-64-27.eu.ngrok.io/";
+const webSocketUrl = "ws://0.tcp.eu.ngrok.io:19467";
 
 const frameRate = 10;
 
