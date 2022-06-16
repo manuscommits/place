@@ -1,3 +1,4 @@
+import Switch from "@mui/material/Switch";
 import Sketch from "react-p5";
 import usePlace from "../Hooks/usePlace";
 import {
@@ -8,7 +9,6 @@ import {
   yMaxPlace
 } from "../settings";
 import { clearCanvas, drawGrid, placePixel } from "../Utils/p5utils";
-import Switch from '@mui/material/Switch';
 
 const setup = (p5, canvasParentRef) => {
   p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
@@ -18,7 +18,8 @@ const setup = (p5, canvasParentRef) => {
 
 const Place = () => {
   // console.log("RENDER PLACE");
-  const { state, place, clear, setDisplayName, setColor, toggleGrid } = usePlace();
+  const { state, place, clear, setDisplayName, setColor, toggleGrid } =
+    usePlace();
   const { pixels, showGrid } = state;
 
   const draw = (p5) => {
@@ -36,16 +37,18 @@ const Place = () => {
     const yIndex = yMaxPlace - 1 - Math.floor(p5.mouseY / size);
     switch (p5.mouseButton) {
       case "left":
-        console.log("place", xIndex, yIndex);
         place(xIndex, yIndex);
         break;
       case "right":
-        console.log("clear", xIndex, yIndex);
         clear(xIndex, yIndex);
         break;
       default:
         break;
     }
+  };
+
+  const mouseWheel = (p5, event) => {
+    console.log(event.delta);
   };
 
   return (
@@ -59,7 +62,12 @@ const Place = () => {
         onChange={(e) => setColor(e.target.value)}
       ></input>
       <Switch defaultChecked onChange={toggleGrid} />
-      <Sketch setup={setup} draw={draw} mousePressed={mousePressed} />
+      <Sketch
+        setup={setup}
+        draw={draw}
+        mousePressed={mousePressed}
+        mouseWheel={mouseWheel}
+      />
     </div>
   );
 };
