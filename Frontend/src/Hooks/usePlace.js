@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { coordsValidAndInRange } from "../Utils/utils";
 import useWebSocket from "./useWebSocket";
 
 const usePlace = () => {
@@ -52,7 +53,7 @@ const usePlace = () => {
 
   const place = (x, y) => {
     const data = { x, y, color: state.color, displayName: state.displayName };
-    send("place", data);
+    coordsValidAndInRange(x, y) && send("place", data);
   };
 
   const clear = (x, y) => {
