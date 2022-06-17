@@ -10,4 +10,8 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-window.addEventListener("contextmenu", (e) => e.preventDefault());
+window.addEventListener("contextmenu", (event) => event.preventDefault());
+window.addEventListener(
+  "auxclick",
+  (event) => event.preventDefault()
+);

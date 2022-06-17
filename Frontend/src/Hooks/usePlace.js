@@ -54,13 +54,11 @@ const usePlace = () => {
   const place = (x, y) => {
     const data = { x, y, color: state.color, displayName: state.displayName };
     coordsValidAndInRange(x, y) && send("place", data);
-    console.log("Send message: place", x, y);
   };
 
   const clear = (x, y) => {
     const data = { x, y };
     coordsValidAndInRange(x, y) && send("clear", data);
-    console.log("Send message: clear", x, y);
   };
 
   const setDisplayName = (displayName) => {

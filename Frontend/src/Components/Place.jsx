@@ -1,14 +1,13 @@
-import Switch from "@mui/material/Switch";
 import Sketch from "react-p5";
 import usePlace from "../Hooks/usePlace";
+import { canvasHeight, canvasWidth, frameRate } from "../settings";
 import {
-  canvasHeight,
-  canvasWidth,
-  frameRate,
-  size,
-  yMaxPlace
-} from "../settings";
-import { clearCanvas, drawGrid, placePixel } from "../Utils/p5utils";
+  clearCanvas,
+  drawGrid,
+  mousePosition,
+  placePixel
+} from "../Utils/p5utils";
+import Settings from "./Settings";
 
 const setup = (p5, canvasParentRef) => {
   p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
@@ -18,8 +17,8 @@ const setup = (p5, canvasParentRef) => {
 
 const Place = () => {
   // console.log("RENDER PLACE");
-  const { state, place, clear, setDisplayName, setColor, toggleGrid } =
-    usePlace();
+  const placeHook = usePlace();
+  const { state, place, clear, setColor } = placeHook;
   const { pixels, showGrid } = state;
 
   const draw = (p5) => {
@@ -33,8 +32,8 @@ const Place = () => {
   };
 
   const mousePressed = (p5) => {
-    const xIndex = Math.floor(p5.mouseX / size);
-    const yIndex = yMaxPlace - 1 - Math.floor(p5.mouseY / size);
+    const { xIndex, yIndex } = mousePosition(p5);
+    const color = state.pixels[[xIndex, yIndex]];
     switch (p5.mouseButton) {
       case "left":
         place(xIndex, yIndex);
@@ -42,26 +41,19 @@ const Place = () => {
       case "right":
         clear(xIndex, yIndex);
         break;
+      case "center":
+        color && setColor(color);
+        break;
       default:
         break;
     }
   };
 
-  const mouseWheel = (p5, event) => {
-    console.log(event.delta);
-  };
+  const mouseWheel = (p5) => {};
 
   return (
     <div>
-      <input
-        placeholder="username"
-        onChange={(e) => setDisplayName(e.target.value)}
-      ></input>
-      <input
-        placeholder="color"
-        onChange={(e) => setColor(e.target.value)}
-      ></input>
-      <Switch defaultChecked onChange={toggleGrid} />
+      <Settings placeHook={placeHook} />
       <Sketch
         setup={setup}
         draw={draw}

@@ -23,6 +23,7 @@ const useWebSocket = (onConncet, onMessage) => {
 
   const send = (message, data) => {
     webSocket.send(JSON.stringify({ message, payload: data || {} }));
+    console.log("Send message:", message, data);
   };
 
   return { send };
