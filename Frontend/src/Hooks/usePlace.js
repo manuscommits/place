@@ -11,8 +11,8 @@ const usePlace = () => {
   });
 
   const onMessage = (data) => {
-    const { message, payload } = data;
     console.log("Message received:", data);
+    const { message, payload } = data;
     const { x, y, color, pixels } = payload || {};
     switch (message) {
       case "place":
@@ -32,6 +32,9 @@ const usePlace = () => {
           });
         });
         break;
+      case "welcome":
+        loadAllPixels();
+        break;
       default:
         break;
     }
@@ -49,7 +52,7 @@ const usePlace = () => {
     send("allPixels");
   };
 
-  const { send } = useWebSocket(loadAllPixels, onMessage);
+  const { send } = useWebSocket(onMessage);
 
   const place = (x, y) => {
     const data = { x, y, color: state.color, displayName: state.displayName };

@@ -1,19 +1,19 @@
 import { useEffect } from "react";
+import socketIOClient from "socket.io-client";
 import { webSocketUrl } from "../settings";
 
-const webSocket = new WebSocket(webSocketUrl);
+const ioSocket = new socketIOClient(webSocketUrl);
 
-const useWebSocket = (onConncet, onMessage) => {
+const useWebSocket = (onMessage) => {
   useEffect(() => {
-    webSocket.addEventListener("open", () => {
-      onConncet();
+    ioSocket.on("open", () => {
+      // geht nicht?
       console.log("WebSocketClient connected.");
     });
 
-    webSocket.addEventListener("message", (event) => {
+    ioSocket.on("message", (data) => {
       try {
-        const jsonData = JSON.parse(event.data);
-        onMessage(jsonData);
+        onMessage(data);
       } catch (error) {
         console.log(error);
       }
@@ -22,8 +22,8 @@ const useWebSocket = (onConncet, onMessage) => {
   }, []);
 
   const send = (message, data) => {
-    webSocket.send(JSON.stringify({ message, payload: data || {} }));
     console.log("Send message:", message, data);
+    ioSocket.send(JSON.stringify({ message, payload: data || {} }));
   };
 
   return { send };

@@ -1,3 +1,7 @@
+const { createServer } = require("https");
+const { readFileSync } = require("fs");
+const { Server } = require("socket.io");
+
 const WebSocketServer = require("ws");
 const { getAllPixels } = require("./database");
 const { place, clear } = require("./place");
@@ -5,8 +9,18 @@ const { place, clear } = require("./place");
 const PORT = 8000;
 const maxListerners = 20;
 
-const webSocketServer = new WebSocketServer.Server({ port: PORT });
-webSocketServer.setMaxListeners(maxListerners);
+const httpsServer = createServer({
+  key: readFileSync("./certificates/key.pem"),
+  cert: readFileSync("./certificates/cert.pem"),
+});
+const io = new Server(httpsServer, {
+  cors: {
+    origin: "*",
+  },
+});
+
+// const webSocketServer = new WebSocketServer.Server({ port: PORT });
+// webSocketServer.setMaxListeners(maxListerners);
 
 const handleRequest = (ws, data) => {
   const { message, payload } = data;
@@ -38,18 +52,20 @@ const clearAndBroadCast = (x, y) => {
 };
 
 const broadcast = (data) => {
-  webSocketServer.clients.forEach((client) => {
-    client.send(JSON.stringify(data));
-  });
+  // console.log("emit", data);
+  io.emit("message", data);
 };
 
 const send = (ws, message, data) => {
-  ws.send(JSON.stringify({ message, payload: data }));
+  ws.send({ message, payload: data });
 };
 
 const startWebSocketSever = () => {
-  webSocketServer.on("connection", (ws) => {
+  io.on("connection", (ws) => {
     console.log("New client connected.");
+
+    send(ws, "welcome");
+
     ws.on("message", (data) => {
       try {
         const jsonData = JSON.parse(data);
@@ -59,12 +75,18 @@ const startWebSocketSever = () => {
         console.log(error);
       }
     });
+    ws.on("disconnect", () => {
+      console.log("Client disconnected.");
+    });
     ws.on("close", () => {
-      console.log("The client has disconnected.");
+      console.log("Connection closed.");
     });
     ws.onerror = (event) => console.log(event.message);
   });
-  console.log(`The WebSocket server is running on port ${PORT}.`);
+
+  httpsServer.listen(PORT, () => {
+    console.log(`The WebSocket server is running on port ${PORT}.`);
+  });
 };
 
 module.exports = { startWebSocketSever, placeAndBroadCast, clearAndBroadCast };
