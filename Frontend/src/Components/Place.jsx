@@ -1,6 +1,5 @@
 import Sketch from "react-p5";
-import usePlace from "../Hooks/usePlace";
-import { canvasHeight, canvasWidth, frameRate } from "../settings";
+import useStateContext from "../Hooks/useStateContext";
 import {
   clearCanvas,
   drawGrid,
@@ -9,17 +8,12 @@ import {
 } from "../Utils/p5utils";
 import Settings from "./Settings";
 
-const setup = (p5, canvasParentRef) => {
-  p5.createCanvas(canvasWidth, canvasHeight).parent(canvasParentRef);
-  p5.noStroke();
-  p5.frameRate(frameRate);
-};
-
 const Place = () => {
   // console.log("RENDER PLACE");
-  const placeHook = usePlace();
-  const { state, place, clear, setColor } = placeHook;
+  const { placeState, p5State } = useStateContext();
+  const { state, place, clear, setColor } = placeState;
   const { pixels, showGrid } = state;
+  const { setup, redraw } = p5State;
 
   const draw = (p5) => {
     clearCanvas(p5);
@@ -49,11 +43,14 @@ const Place = () => {
     }
   };
 
-  const mouseWheel = (p5) => {};
+  const mouseWheel = (p5) => {
+    console.log("redraw");
+    redraw();
+  };
 
   return (
     <div>
-      <Settings placeHook={placeHook} />
+      <Settings placeHook={placeState} />
       <Sketch
         setup={setup}
         draw={draw}
