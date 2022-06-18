@@ -1,13 +1,12 @@
 import { useEffect } from "react";
-import socketIOClient from "socket.io-client";
+import { io } from "socket.io-client";
 import { webSocketUrl } from "../settings";
 
-const ioSocket = new socketIOClient(webSocketUrl);
+const ioSocket = io(webSocketUrl);
 
 const useWebSocket = (onMessage) => {
   useEffect(() => {
-    ioSocket.on("open", () => {
-      // geht nicht?
+    ioSocket.on("connect", () => {
       console.log("WebSocketClient connected.");
     });
 

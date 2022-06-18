@@ -32,9 +32,6 @@ const usePlace = () => {
           });
         });
         break;
-      case "welcome":
-        loadAllPixels();
-        break;
       default:
         break;
     }
@@ -46,10 +43,6 @@ const usePlace = () => {
       transformation(pixels);
       return { ...previousState, pixels };
     });
-  };
-
-  const loadAllPixels = () => {
-    send("allPixels");
   };
 
   const { send } = useWebSocket(onMessage);

@@ -1,26 +1,26 @@
-const { createServer } = require("https");
+const { createServer: createHttpsServer } = require("https");
+const { createServer: createHttpServer } = require("http");
 const { readFileSync } = require("fs");
 const { Server } = require("socket.io");
-
-const WebSocketServer = require("ws");
 const { getAllPixels } = require("./database");
 const { place, clear } = require("./place");
 
 const PORT = 8000;
-const maxListerners = 20;
+const maxListerners = 10;
 
-const httpsServer = createServer({
-  key: readFileSync("./certificates/key.pem"),
-  cert: readFileSync("./certificates/cert.pem"),
-});
-const io = new Server(httpsServer, {
+const httpsEnabled = false;
+const server = httpsEnabled
+  ? createHttpsServer({
+      key: readFileSync("./certificates/key.pem"),
+      cert: readFileSync("./certificates/cert.pem"),
+    })
+  : createHttpServer();
+const io = new Server(server, {
   cors: {
     origin: "*",
   },
 });
-
-// const webSocketServer = new WebSocketServer.Server({ port: PORT });
-// webSocketServer.setMaxListeners(maxListerners);
+io.setMaxListeners(maxListerners);
 
 const handleRequest = (ws, data) => {
   const { message, payload } = data;
@@ -33,13 +33,17 @@ const handleRequest = (ws, data) => {
       clearAndBroadCast(x, y);
       break;
     case "allPixels":
-      getAllPixels((err, rows) => {
-        send(ws, "allPixels", { pixels: rows });
-      });
+      sendAllPixels(ws);
       break;
     default:
       break;
   }
+};
+
+const sendAllPixels = (ws) => {
+  getAllPixels((err, rows) => {
+    send(ws, "allPixels", { pixels: rows });
+  });
 };
 
 const placeAndBroadCast = (x, y, color, displayName) => {
@@ -52,7 +56,6 @@ const clearAndBroadCast = (x, y) => {
 };
 
 const broadcast = (data) => {
-  // console.log("emit", data);
   io.emit("message", data);
 };
 
@@ -64,7 +67,7 @@ const startWebSocketSever = () => {
   io.on("connection", (ws) => {
     console.log("New client connected.");
 
-    send(ws, "welcome");
+    sendAllPixels(ws);
 
     ws.on("message", (data) => {
       try {
@@ -84,7 +87,7 @@ const startWebSocketSever = () => {
     ws.onerror = (event) => console.log(event.message);
   });
 
-  httpsServer.listen(PORT, () => {
+  server.listen(PORT, () => {
     console.log(`The WebSocket server is running on port ${PORT}.`);
   });
 };
