@@ -1,10 +1,9 @@
 import { Switch, TextField } from "@mui/material";
 
 const Settings = ({ placeHook }) => {
-  const { state, setDisplayName, setColor, toggleGrid } =
-    placeHook;
+  const { state, setDisplayName, setColor, toggleGrid } = placeHook;
   return (
-    <>
+    <div style={{marginTop: "5px", marginBottom: "5px"}}>
       <TextField
         label="username"
         color="secondary"
@@ -18,7 +17,7 @@ const Settings = ({ placeHook }) => {
         onChange={(event) => setColor(event.target.value)}
       />
       <Switch defaultChecked onChange={toggleGrid} />
-    </>
+    </div>
   );
 };
 

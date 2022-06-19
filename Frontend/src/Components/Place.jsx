@@ -13,7 +13,7 @@ const Place = () => {
   const { placeState, p5State } = useStateContext();
   const { state, place, clear, setColor } = placeState;
   const { pixels, showGrid } = state;
-  const { setup, redraw } = p5State;
+  const { setup } = p5State;
 
   const draw = (p5) => {
     clearCanvas(p5);
@@ -28,9 +28,12 @@ const Place = () => {
   const mousePressed = (p5) => {
     const { xIndex, yIndex } = mousePosition(p5);
     const color = state.pixels[[xIndex, yIndex]];
-    switch (p5.mouseButton) {
+    const mouseButton = p5.mouseButton;
+    const leftShiftPressed = p5.keyIsDown(16);
+    switch (mouseButton) {
       case "left":
-        place(xIndex, yIndex);
+        if (leftShiftPressed) setColor(color);
+        else place(xIndex, yIndex);
         break;
       case "right":
         clear(xIndex, yIndex);
@@ -43,10 +46,7 @@ const Place = () => {
     }
   };
 
-  const mouseWheel = (p5) => {
-    console.log("redraw");
-    redraw();
-  };
+  const mouseWheel = (p5) => {};
 
   return (
     <div>
