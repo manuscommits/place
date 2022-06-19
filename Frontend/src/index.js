@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
+// import { webSocketUrl } from "./settings";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,3 +16,4 @@ window.addEventListener(
   "auxclick",
   (event) => event.preventDefault()
 );
+// window.location.href = "http://" + webSocketUrl;
