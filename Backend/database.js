@@ -23,7 +23,7 @@ const db = new sqlite3.Database(DBSOURCE, (err) => {
   console.log("Connected to the SQLite database.");
   db.run(CREATE_TABLE, (err) => {
     if (err) {
-      console.log("Table already exists.");
+      // console.log("Table already exists.");
     }
   });
 });
@@ -46,7 +46,7 @@ const deletePixel = (x, y) => {
 };
 
 const deleteUsersPixels = (displayName) => {
-    db.run(`DELETE FROM ${tableName} WHERE displayName='${displayName}'`);
+  db.run(`DELETE FROM ${tableName} WHERE displayName='${displayName}'`);
 };
 
 module.exports = { insert, getAllPixels, deletePixel, deleteUsersPixels };

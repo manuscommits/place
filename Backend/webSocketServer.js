@@ -1,6 +1,8 @@
 const { createServer: createHttpsServer } = require("https");
 const { createServer: createHttpServer } = require("http");
-const { readFileSync } = require("fs");
+const express = require("express");
+const path = require("path");
+const { readFileSync, readFile, writeFile } = require("fs");
 const { Server } = require("socket.io");
 const { getAllPixels } = require("./database");
 const { place, clear } = require("./place");
@@ -8,13 +10,30 @@ const { place, clear } = require("./place");
 const PORT = 8000;
 const maxListerners = 10;
 
+const app = express();
+const pathToFrontendBuild = path.join(__dirname, "../frontend/build");
+const pathIndexHtml = path.join(__dirname, "../frontend/build/index.html");
+readFile(pathIndexHtml, (err, data) => {
+  if (err) throw err;
+  // replace "/place" with "."
+  const modifiedData = data.toString().replaceAll("/place", ".");
+  writeFile(pathIndexHtml, modifiedData, (err) => {
+    if (err) throw err;
+    app.use(express.static(pathToFrontendBuild));
+    console.log("Frontend ready.");
+  });
+});
+
 const httpsEnabled = false;
 const server = httpsEnabled
-  ? createHttpsServer({
-      key: readFileSync("./certificates/key.pem"),
-      cert: readFileSync("./certificates/cert.pem"),
-    })
-  : createHttpServer();
+  ? createHttpsServer(
+      {
+        key: readFileSync("./certificates/key.pem"),
+        cert: readFileSync("./certificates/cert.pem"),
+      },
+      app
+    )
+  : createHttpServer(app);
 const io = new Server(server, {
   cors: {
     origin: "*",
