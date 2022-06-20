@@ -9,6 +9,7 @@ const { place, clear } = require("./place");
 
 const PORT = 8000;
 const maxListerners = 10;
+const httpsEnabled = false;
 
 const app = express();
 const pathToFrontendBuild = path.join(__dirname, "../frontend/build");
@@ -24,7 +25,6 @@ readFile(pathIndexHtml, (err, data) => {
   });
 });
 
-const httpsEnabled = false;
 const server = httpsEnabled
   ? createHttpsServer(
       {
