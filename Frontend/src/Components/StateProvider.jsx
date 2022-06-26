@@ -4,7 +4,7 @@ import StateContext from "./StateContext";
 
 const StateProvider = ({ children }) => {
   const placeState = usePlace();
-  const p5State = useP5();
+  const p5State = useP5(placeState.state.settings);
   const state = { placeState, p5State };
   return (
     <StateContext.Provider value={state}>{children}</StateContext.Provider>

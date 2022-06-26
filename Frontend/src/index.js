@@ -12,8 +12,5 @@ ReactDOM.render(
 );
 
 window.addEventListener("contextmenu", (event) => event.preventDefault());
-window.addEventListener(
-  "auxclick",
-  (event) => event.preventDefault()
-);
+window.addEventListener("auxclick", (event) => event.preventDefault());
 // window.location.href = "http://" + webSocketUrl;

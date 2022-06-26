@@ -1,21 +1,14 @@
-import {
-  canvasHeight,
-  canvasWidth,
-  lightLine,
-  mediumLine,
-  size,
-  strongLine,
-  xMaxPlace,
-  yMaxPlace,
-} from "../settings";
+import { lightLine, mediumLine, strongLine } from "../settings";
 
-const clearCanvas = (p5) => {
+const clearCanvas = (p5, settings) => {
+  const { canvasWidth, canvasHeight } = settings;
   p5.erase();
   p5.rect(0, 0, canvasWidth, canvasHeight);
   p5.noErase();
 };
 
-const drawGrid = (p5) => {
+const drawGrid = (p5, settings) => {
+  const { size, xMaxPlace, yMaxPlace, canvasWidth, canvasHeight } = settings;
   p5.noFill();
   p5.background(255);
   p5.rect(0, 0, canvasWidth, canvasHeight);
@@ -35,12 +28,14 @@ const drawGrid = (p5) => {
   p5.noStroke();
 };
 
-const placePixel = (p5, xIndex, yIndex, color) => {
+const placePixel = (p5, xIndex, yIndex, color, settings) => {
+  const { size, yMaxPlace } = settings;
   p5.fill(color);
   p5.square(size * xIndex, size * (yMaxPlace - 1 - yIndex), size);
 };
 
-const mousePosition = (p5) => {
+const mousePosition = (p5, settings) => {
+  const { size, yMaxPlace } = settings;
   const xIndex = Math.floor(p5.mouseX / size);
   const yIndex = yMaxPlace - 1 - Math.floor(p5.mouseY / size);
   return { xIndex, yIndex };

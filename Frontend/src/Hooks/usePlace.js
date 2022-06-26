@@ -1,10 +1,18 @@
 import { useState } from "react";
-import { coordsValidAndInRange } from "../Utils/utils";
+import {
+  canvasHeight,
+  canvasWidth,
+  size,
+  xMaxPlace,
+  yMaxPlace
+} from "../settings";
+import { isInteger } from "../Utils/utils";
 import useWebSocket from "./useWebSocket";
 
 const usePlace = () => {
   const [state, setState] = useState({
     pixels: {},
+    settings: { size, xMaxPlace, yMaxPlace, canvasWidth, canvasHeight },
     showGrid: true,
     displayName: "default",
     color: "black",
@@ -47,6 +55,17 @@ const usePlace = () => {
 
   const { send } = useWebSocket(onMessage);
 
+  const coordsValidAndInRange = (x, y) => {
+    return (
+      isInteger(x) &&
+      isInteger(y) &&
+      x >= 0 &&
+      y >= 0 &&
+      x < state.settings.xMaxPlace &&
+      y < state.settings.yMaxPlace
+    );
+  };
+
   const place = (x, y) => {
     const data = { x, y, color: state.color, displayName: state.displayName };
     coordsValidAndInRange(x, y) && send("place", data);
@@ -72,7 +91,50 @@ const usePlace = () => {
     }));
   };
 
-  return { state, place, clear, setColor, setDisplayName, toggleGrid };
+  const increaseSize = () => {
+    setState((previousState) => {
+      const size = previousState.settings.size + 1;
+      const canvasWidth = previousState.settings.xMaxPlace * size;
+      const canvasHeight = previousState.settings.yMaxPlace * size;
+      return {
+        ...previousState,
+        settings: {
+          ...previousState.settings,
+          size,
+          canvasWidth,
+          canvasHeight,
+        },
+      };
+    });
+  };
+
+  const decreaseSize = () => {
+    setState((previousState) => {
+      const size = Math.max(previousState.settings.size - 1, 1);
+      const canvasWidth = previousState.settings.xMaxPlace * size;
+      const canvasHeight = previousState.settings.yMaxPlace * size;
+      return {
+        ...previousState,
+        settings: {
+          ...previousState.settings,
+          size,
+          canvasWidth,
+          canvasHeight,
+        },
+      };
+    });
+  };
+
+  return {
+    state,
+    place,
+    clear,
+    setColor,
+    setDisplayName,
+    toggleGrid,
+    increaseSize,
+    decreaseSize,
+  };
 };
 
 export default usePlace;

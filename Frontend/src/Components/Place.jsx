@@ -12,21 +12,21 @@ const Place = () => {
   // console.log("RENDER PLACE");
   const { placeState, p5State } = useStateContext();
   const { state, place, clear, setColor } = placeState;
-  const { pixels, showGrid } = state;
+  const { pixels, showGrid, settings } = state;
   const { setup } = p5State;
 
   const draw = (p5) => {
-    clearCanvas(p5);
-    showGrid && drawGrid(p5);
+    clearCanvas(p5, settings);
+    showGrid && drawGrid(p5, settings);
 
     Object.entries(pixels).forEach(([indices, color]) => {
       const [xIndex, yIndex] = indices.split(",");
-      placePixel(p5, xIndex, yIndex, color);
+      placePixel(p5, xIndex, yIndex, color, settings);
     });
   };
 
   const mousePressed = (p5) => {
-    const { xIndex, yIndex } = mousePosition(p5);
+    const { xIndex, yIndex } = mousePosition(p5, settings);
     const color = state.pixels[[xIndex, yIndex]];
     const mouseButton = p5.mouseButton;
     const leftShiftPressed = p5.keyIsDown(16);
@@ -46,7 +46,9 @@ const Place = () => {
     }
   };
 
-  const mouseWheel = (p5) => {};
+  const mouseWheel = (p5, event) => {
+    // const delta = event.delta;
+  };
 
   return (
     <div>
