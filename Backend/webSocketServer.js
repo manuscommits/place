@@ -12,8 +12,8 @@ const maxListerners = 10;
 const httpsEnabled = false;
 
 const app = express();
-const pathToFrontendBuild = path.join(__dirname, "../frontend/build");
-const pathIndexHtml = path.join(__dirname, "../frontend/build/index.html");
+const pathToFrontendBuild = path.join(__dirname, "../Frontend/build");
+const pathIndexHtml = path.join(__dirname, "../Frontend/build/index.html");
 readFile(pathIndexHtml, (err, data) => {
   if (err) throw err;
   // replace "/place" with "."
