@@ -61,7 +61,8 @@ const handleRequest = (ws, data) => {
 
 const sendAllPixels = (ws) => {
   getAllPixels((err, rows) => {
-    send(ws, "allPixels", { pixels: rows });
+    const pixels = rows.map(({ x, y, color }) => ({ x, y, color }));
+    send(ws, "allPixels", { pixels });
   });
 };
 
