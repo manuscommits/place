@@ -85,7 +85,7 @@ const send = (ws, message, data) => {
 
 const startWebSocketSever = () => {
   io.on("connection", (ws) => {
-    console.log("New client connected.");
+    console.log("New client connected. Remote address:", ws.conn.remoteAddress);
 
     sendAllPixels(ws);
 
