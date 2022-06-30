@@ -3,8 +3,8 @@ const webSocketUrl = "ws://5.tcp.eu.ngrok.io:12936";
 const frameRate = 10;
 
 const size = 10;
-const xMaxPlace = 300;
-const yMaxPlace = 200;
+const xMaxPlace = 600;
+const yMaxPlace = 300;
 
 const canvasWidth = size * xMaxPlace;
 const canvasHeight = size * yMaxPlace;
