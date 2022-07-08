@@ -1,6 +1,9 @@
+const fs = require("fs");
 var sqlite3 = require("sqlite3").verbose();
 
 const DBSOURCE = "db.sqlite";
+const backupDir = "./backups";
+const backupInterval = 60 * 60 * 1000;
 
 const tableName = "pixels";
 
@@ -52,5 +55,29 @@ const deletePixel = (x, y) => {
 const deleteUsersPixels = (displayName) => {
   db.run(`DELETE FROM ${tableName} WHERE displayName='${displayName}'`);
 };
+
+const getAllBackups = (func) => {
+  fs.readdir(backupDir, (err, files) => {
+    if (err) throw err;
+    func(files);
+  });
+};
+
+const saveBackup = (backups) => {
+  console.log(backups);
+  const now = new Date().toISOString().split("T")[0];
+  const backupName = `${now}_db.sqlite`;
+  if (backups.includes(backupName)) return;
+  fs.copyFile(DBSOURCE, `${backupDir}/${backupName}`, (err) => {
+    if (err) throw err;
+    console.log(`Backup saved to ${backupName}.`);
+  });
+};
+
+const startBackupLoop = () => {
+  setInterval(() => getAllBackups(saveBackup), backupInterval);
+};
+
+startBackupLoop();
 
 module.exports = { insert, getAllPixels, deletePixel, deleteUsersPixels };
