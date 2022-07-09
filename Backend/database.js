@@ -64,7 +64,6 @@ const getAllBackups = (func) => {
 };
 
 const saveBackup = (backups) => {
-  console.log(backups);
   const now = new Date().toISOString().split("T")[0];
   const backupName = `${now}_db.sqlite`;
   if (backups.includes(backupName)) return;
