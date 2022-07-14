@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
 // import { webSocketUrl } from "./settings";
+// window.location.href = "http://" + webSocketUrl.slice(5);
 
 ReactDOM.render(
   <React.StrictMode>
@@ -13,4 +14,3 @@ ReactDOM.render(
 
 window.addEventListener("contextmenu", (event) => event.preventDefault());
 window.addEventListener("auxclick", (event) => event.preventDefault());
-// window.location.href = "http://" + webSocketUrl;
